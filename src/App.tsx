@@ -3,6 +3,7 @@ import Logo from './assets/logo-nlw-expert.svg';
 import {NoteCard} from './components/note-card';
 import {NewNoteCard} from './components/new-note-card';
 
+
 export function App() {
    return (
      <div className="
@@ -38,14 +39,12 @@ export function App() {
          
 
          <NewNoteCard/>
-
-         <NoteCard/>
-         <NoteCard/>
-         <NoteCard/>
-         <NoteCard/>
-         <NoteCard/>
-
          
+         <NoteCard note= {{
+           date: new Date(),
+           content: 'Hello World!'
+         }}/>
+
        </div>
      </div>
   )
