@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { toast } from 'sonner';
  
  
 export function NewNoteCard(){
@@ -23,6 +24,8 @@ export function NewNoteCard(){
     event.prevenDefault();
 
     console.log(content);
+
+    toast.sucess('Nota salva com sucesso!');
   }
   
   return (
