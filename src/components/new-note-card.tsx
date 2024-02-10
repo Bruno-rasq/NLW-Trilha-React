@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { toast } from 'sonner';
 
+
 interface NewNoteProps {
   onNoteCreated: (content: string) => void;
 }
@@ -28,6 +29,9 @@ export function NewNoteCard({ onNoteCreated }: NewNoteProps){
     event.preventDefault();
 
     onNoteCreated(content);
+
+    setContent('');
+    setShouldShowOnboarding(true);
 
     toast.success('Nota salva com sucesso!');
   }
@@ -133,7 +137,8 @@ export function NewNoteCard({ onNoteCreated }: NewNoteProps){
                 resize-none
                 flex-1
                 outline-none"
-                onChange={handleContentChanged}>
+                onChange={handleContentChanged}
+                value={content}>
               </textarea>
             )}
             

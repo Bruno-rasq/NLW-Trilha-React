@@ -2,24 +2,52 @@ import './App.css';
 import Logo from './assets/logo-nlw-expert.svg';
 import {NoteCard} from './components/note-card';
 import {NewNoteCard} from './components/new-note-card';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
+
+
+interface Note {
+  id: string,
+  date: Date,
+  content: string,
+}
 
 
 export function App() {
 
-  const [notes, setNotes] = useState([
-    {id: 1, date: new Date(),content: 'Hello World!'}
-  ]);
+  const [search, setSearch] = useState('');
+  const [notes, setNotes] = useState<Note[]>(() => {
+
+    const notesOnStorage = localStorage.getItem('notes');
+    
+    if (notesOnStorage){
+      return JSON.parse(notesOnStorage);
+    }
+    
+    return []
+  });
 
   function onNoteCreated(content: string){
     const newNote = {
-      id: Math.random(),
+      id: crypto.randomUUID(),
       date: new Date(),
       content,
     }
 
-    setNotes([newNote, ...notes]);
+    const notesArray = [newNote, ...notes];
+    
+    setNotes(notesArray);
+
+    localStorage.setItem('notes', JSON.stringify(notesArray));
   }
+
+  function handleSearch(event: ChangeEvent<HTMLInputElement>){
+    const query = event.target.value;
+
+    setSearch(query)
+    
+  }
+
+  const filteredNotes = search !== '' ? notes.filter(note => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase())) : notes;
   
    return (
      <div className="
@@ -41,7 +69,7 @@ export function App() {
            tracking-tight 
            outline-none 
            placeholder:text-slate-500"
-           />
+           onChange={handleSearch}/>
        </form>
 
        <div className="h-px bg-slate-700"/>
@@ -56,7 +84,7 @@ export function App() {
 
          <NewNoteCard onNoteCreated={onNoteCreated}/>
          
-         {notes.map(note => {
+         {filteredNotes.map(note => {
            return <NoteCard key={note.id} note={note}/>
          })}
 
