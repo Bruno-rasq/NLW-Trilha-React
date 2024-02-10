@@ -2,9 +2,13 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { toast } from 'sonner';
+
+interface NewNoteProps {
+  onNoteCreated: (content: string) => void;
+}
  
  
-export function NewNoteCard(){
+export function NewNoteCard({ onNoteCreated }: NewNoteProps){
 
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
   const [content, setContent] = useState('');
@@ -21,11 +25,11 @@ export function NewNoteCard(){
   }
 
   function handleSaveNote(event: FormEvent){
-    event.prevenDefault();
+    event.preventDefault();
 
-    console.log(content);
+    onNoteCreated(content);
 
-    toast.sucess('Nota salva com sucesso!');
+    toast.success('Nota salva com sucesso!');
   }
   
   return (
@@ -144,7 +148,8 @@ export function NewNoteCard(){
             text-lime-950
             outline-none
             font-medium
-            hover:bg-lime-500">
+            hover:bg-lime-500"
+            onClick={handleSaveNote}>
            Salvar nota.
           </button>
          </form>

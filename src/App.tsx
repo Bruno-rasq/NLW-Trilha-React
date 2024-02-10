@@ -2,9 +2,25 @@ import './App.css';
 import Logo from './assets/logo-nlw-expert.svg';
 import {NoteCard} from './components/note-card';
 import {NewNoteCard} from './components/new-note-card';
+import { useState } from 'react';
 
 
 export function App() {
+
+  const [notes, setNotes] = useState([
+    {id: 1, date: new Date(),content: 'Hello World!'}
+  ]);
+
+  function onNoteCreated(content: string){
+    const newNote = {
+      id: Math.random(),
+      date: new Date(),
+      content,
+    }
+
+    setNotes([newNote, ...notes]);
+  }
+  
    return (
      <div className="
        mx-auto 
@@ -38,12 +54,11 @@ export function App() {
          gap-6">
          
 
-         <NewNoteCard/>
+         <NewNoteCard onNoteCreated={onNoteCreated}/>
          
-         <NoteCard note= {{
-           date: new Date(),
-           content: 'Hello World!'
-         }}/>
+         {notes.map(note => {
+           return <NoteCard key={note.id} note={note}/>
+         })}
 
        </div>
      </div>
